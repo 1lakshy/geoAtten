@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face Recognition</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+  <style>
+    #video {
+      position: relative;
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>Face Recognition Attendance System</h2>
+  <video id="video" autoplay></video>
+
+  <script>
+    async function loadModels() {
+      await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+      await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+    }
+
+    async function startVideo() {
+      const video = document.getElementById('video');
+      navigator.getUserMedia(
+        { video: {} },
+        stream => video.srcObject = stream,
+        err => console.error(err)
+      );
+    }
+
+    async function recognizeFaces() {
+      const video = document.getElementById('video');
+      const labeledDescriptors = await loadLabeledImages();
+      const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.6);
+
+      video.addEventListener('play', () => {
+        setInterval(async () => {
+          const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceDescriptors();
+
+          const results = detections.map(d => faceMatcher.findBestMatch(d.descriptor));
+
+          if (results.length > 0) {
+            window.ReactNativeWebView.postMessage(JSON.stringify(results));
+          }
+        }, 1000);
+      });
+    }
+
+    function loadLabeledImages() {
+      const labels = ['Person1', 'Person2']; // Replace with names
+      return Promise.all(
+        labels.map(async label => {
+          const imgUrl = `/labeled_images/${label}.jpg`; // Replace with your image URLs
+          const img = await faceapi.fetchImage(imgUrl);
+          const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+          return new faceapi.LabeledFaceDescriptors(label, [detections.descriptor]);
+        })
+      );
+    }
+
+    // Load models and start video
+    loadModels().then(startVideo).then(recognizeFaces);
+  </script>
+</body>
+</html>

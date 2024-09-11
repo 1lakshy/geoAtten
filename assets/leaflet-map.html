@@ -1,0 +1,161 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrueWay</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .coordinate {
+            position: absolute;
+            bottom: 10px;
+            right: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+</body>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+    function initMap() {
+        if (window.userLocation) {
+            const { latitude, longitude } = window.userLocation;
+
+            const newIcon = L.icon({
+    iconUrl: 'employee.png',
+    iconSize: [32, 32], // Size of the icon
+    iconAnchor: [16, 32], // Anchor point of the icon
+    popupAnchor: [0, -32] // Anchor point of the popup
+});
+
+            // Initialize the map at the user's location
+            const map = L.map('map').setView([latitude, longitude], 13);
+
+            // Add Google Maps tiles
+            L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            }).addTo(map);
+
+            L.circle([19.064112369310525, 72.83545966931415], {
+                color: 'green',
+                fillColor: '#00FF00', // Light green fill
+                fillOpacity: 0.5,
+                radius: 100 // Radius in meters
+            }).addTo(map);
+
+            // Add a marker at the user's location
+            L.marker([latitude, longitude],{ icon: newIcon }).addTo(map)
+                // .bindPopup('You are here!')
+                .openPopup();
+        } else {
+            console.error("User location is not defined");
+        }
+    }
+
+    
+    // This function will be called from React Native to initialize the map
+</script>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrueWay</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .coordinate {
+            position: absolute;
+            bottom: 10px;
+            right: 50%;
+        }
+
+        /* Hide Leaflet zoom control */
+        .leaflet-control-zoom {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+</body>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+    function initMap() {
+        if (window.userLocation) {
+            const { latitude, longitude } = window.userLocation;
+
+            const newIcon = L.icon({
+                iconUrl: 'employee.png',
+                iconSize: [32, 32], // Size of the icon
+                iconAnchor: [16, 32], // Anchor point of the icon
+                popupAnchor: [0, -32] // Anchor point of the popup
+            });
+
+            // Initialize the map at the user's location
+            const map = L.map('map').setView([latitude, longitude], 13);
+
+            // Add Google Maps tiles
+            L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            }).addTo(map);
+
+            L.circle([19.064088, 72.835888], {
+                color: 'green',
+                fillColor: '#00FF00', // Light green fill
+                fillOpacity: 0.5,
+                radius: 60 // Radius in meters
+            }).addTo(map);
+
+            // Add a marker at the user's location
+            L.marker([latitude, longitude], { icon: newIcon }).addTo(map)
+                // .bindPopup('You are here!')
+                .openPopup();
+        } else {
+            console.error("User location is not defined");
+        }
+    }
+
+    // This function will be called from React Native to initialize the map
+</script>
+</html>
+
+
+
+
+
+
+
